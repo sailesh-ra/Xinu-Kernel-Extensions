@@ -1,0 +1,40 @@
+i# === Build artifacts ===
+*.o
+*.a
+*.so
+*.out
+*.bin
+*.elf
+*.map
+*.lst
+*.exe
+
+# === Intermediate build or dependency files ===
+*.defs
+*.deps
+*.vers_num
+*.yyleng
+version
+
+# === OS or editor temp files ===
+*~
+*.swp
+*.log
+.DS_Store
+Thumbs.db
+
+# === Backups ===
+*.bak
+*.tmp
+
+# === Generated config or parser sources (optional, if build regenerates them) ===
+config/conf.c
+config/conf.h
+config/config
+config/lex.yy.c
+config/y.tab.c
+/
+
+include/conf.h
+system/conf.c
+.vscode/settings.json

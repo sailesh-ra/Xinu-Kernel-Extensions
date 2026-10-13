@@ -1,0 +1,33 @@
+making the config program
+make[1]: Entering directory '/mnt/ncsudrive/s/srachap/xinu-vbox/config'
+rm -f config lex.yy.c y.tab.c
+/usr/bin/flex config.l
+/usr/bin/bison -y	 config.y
+/usr/bin/gcc  -o config y.tab.c -lfl
+./config Configuration conf.c conf.h
+cp -p conf.h ../include
+cp -p conf.c ../system
+make[1]: Leaving directory '/mnt/ncsudrive/s/srachap/xinu-vbox/config'
+making ../system/conf.c
+make[1]: Entering directory '/mnt/ncsudrive/s/srachap/xinu-vbox/compile'
+forcing a rebuild of conf.h and conf.c
+make[2]: Entering directory '/mnt/ncsudrive/s/srachap/xinu-vbox/compile'
+creating new version
+make[2]: Leaving directory '/mnt/ncsudrive/s/srachap/xinu-vbox/compile'
+make[2]: Entering directory '/mnt/ncsudrive/s/srachap/xinu-vbox/config'
+cp -p conf.h ../include
+cp -p conf.c ../system
+make[2]: Leaving directory '/mnt/ncsudrive/s/srachap/xinu-vbox/config'
+make[1]: Leaving directory '/mnt/ncsudrive/s/srachap/xinu-vbox/compile'
+Rebuilding the .defs file
+/usr/bin/gcc-4.8 -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O0 -DBRELOC=0x150000 -DBOOTPLOC=0x150000 -DBSDURG -DVERSION=\""`cat version`"\" -I../include -o binaries/start.o ../system/start.S
+/usr/bin/gcc-4.8 -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O0 -DBRELOC=0x150000 -DBOOTPLOC=0x150000 -DBSDURG -DVERSION=\""`cat version`"\" -I../include -o binaries/ascdate.o ../system/ascdate.c
+/usr/bin/gcc-4.8 -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O0 -DBRELOC=0x150000 -DBOOTPLOC=0x150000 -DBSDURG -DVERSION=\""`cat version`"\" -I../include -o binaries/bufinit.o ../system/bufinit.c
+/usr/bin/gcc-4.8 -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O0 -DBRELOC=0x150000 -DBOOTPLOC=0x150000 -DBSDURG -DVERSION=\""`cat version`"\" -I../include -o binaries/chprio.o ../system/chprio.c
+/usr/bin/gcc-4.8 -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O0 -DBRELOC=0x150000 -DBOOTPLOC=0x150000 -DBSDURG -DVERSION=\""`cat version`"\" -I../include -o binaries/clkhandler.o ../system/clkhandler.c
+/usr/bin/gcc-4.8 -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O0 -DBRELOC=0x150000 -DBOOTPLOC=0x150000 -DBSDURG -DVERSION=\""`cat version`"\" -I../include -o binaries/clkinit.o ../system/clkinit.c
+/usr/bin/gcc-4.8 -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O0 -DBRELOC=0x150000 -DBOOTPLOC=0x150000 -DBSDURG -DVERSION=\""`cat version`"\" -I../include -o binaries/close.o ../system/close.c
+/usr/bin/gcc-4.8 -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O0 -DBRELOC=0x150000 -DBOOTPLOC=0x150000 -DBSDURG -DVERSION=\""`cat version`"\" -I../include -o binaries/conf.o ../system/conf.c
+/usr/bin/gcc-4.8 -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O0 -DBRELOC=0x150000 -DBOOTPLOC=0x150000 -DBSDURG -DVERSION=\""`cat version`"\" -I../include -o binaries/control.o ../system/control.c
+/usr/bin/gcc-4.8 -march=i586 -m32 -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O0 -DBRELOC=0x150000 -DBOOTPLOC=0x150000 -DBSDURG -DVERSION=\""`cat version`"\" -I../include -o binaries/create.o ../system/create.c
+make: *** No rule to make target '../system/create_original.c', needed by 'binaries/create_original.o'.  Stop.

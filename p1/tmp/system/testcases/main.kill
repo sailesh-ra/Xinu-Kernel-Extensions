@@ -1,0 +1,145 @@
+void print_process_tree(void) {
+    int i;
+    kprintf("Active processes:\n");
+    for (i = 0; i < NPROC; i++) {
+        if (proctab[i].prstate != PR_FREE && proctab[i].user_process == TRUE) {
+            kprintf("  PID %d: %s (parent: %d)\n", 
+                    i, proctab[i].prname, proctab[i].prparent);
+        }
+    }
+}
+
+process test_process(int process_id) {
+    kprintf("Process %d (PID %d) started\n", process_id, currpid);
+    while (1) {
+        sleep(10);
+    }
+    return OK;
+}
+
+process main(void) {
+    pid32 p1, p2, p3, p4, p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16;
+    
+    kprintf("Creating process tree for cascading termination test\n");
+    
+    /* Create root process */
+    p1 = create((void *)test_process, 4096, 20, "P1", 1, 1);
+    proctab[p1].user_process = TRUE;
+    resume(p1);
+    
+    /* Create children of P1 */
+    p2 = create((void *)test_process, 4096, 20, "P2", 1, 2);
+    proctab[p2].user_process = TRUE;
+    proctab[p2].prparent = p1;  /* Set P1 as parent */
+    resume(p2);
+    
+    /* Create children of P2 */
+    p3 = create((void *)test_process, 4096, 20, "P3", 1, 3);
+    proctab[p3].user_process = TRUE;
+    proctab[p3].prparent = p2;
+    resume(p3);
+    
+    p4 = create((void *)test_process, 4096, 20, "P4", 1, 4);
+    proctab[p4].user_process = TRUE;
+    proctab[p4].prparent = p2;
+    resume(p4);
+    
+    /* Create children of P3 */
+
+    p5 = create((void *)test_process, 4096, 20, "P5", 1, 5);
+    proctab[p5].user_process = TRUE;
+    proctab[p5].prparent = p3;
+    resume(p5);
+
+    p6 = create((void *)test_process, 4096, 20, "P6", 1, 6);
+    proctab[p6].user_process = TRUE;
+    proctab[p6].prparent = p3;
+    resume(p6);
+
+    p7 = create((void *)test_process, 4096, 20, "P7", 1, 7);
+    proctab[p7].user_process = TRUE;
+    proctab[p7].prparent = p3;
+    resume(p7);
+
+    /* Create children of P4 */
+    p11 = create((void *)test_process, 4096, 20, "P11", 1, 11);
+    proctab[p11].user_process = TRUE;
+    proctab[p11].prparent = p4;
+    resume(p11);
+
+
+    /* Create children of P5 */
+
+    p8 = create((void *)test_process, 4096, 20, "P8", 1, 8);
+    proctab[p8].user_process = TRUE;
+    proctab[p8].prparent = p5;
+    resume(p8);
+    
+    p9 = create((void *)test_process, 4096, 20, "P9", 1, 9);
+    proctab[p9].user_process = TRUE;
+    proctab[p9].prparent = p5;
+    resume(p9);
+
+    /* Create children of P6 */
+
+    p10 = create((void *)test_process, 4096, 20, "P10", 1, 10);
+    proctab[p10].user_process = TRUE;
+    proctab[p10].prparent = p6;
+    resume(p10);
+
+    /* Create children of P11 */
+
+    p12 = create((void *)test_process, 4096, 20, "P12", 1, 12);
+    proctab[p12].user_process = TRUE;
+    proctab[p12].prparent = p11;
+    resume(p12);
+
+    p13 = create((void *)test_process, 4096, 20, "P13", 1, 13);
+    proctab[p13].user_process = TRUE;
+    proctab[p13].prparent = p11;
+    resume(p13);
+
+    p14 = create((void *)test_process, 4096, 20, "P14", 1, 14);
+    proctab[p14].user_process = TRUE;
+    proctab[p14].prparent = p11;
+    resume(p14);
+
+    /* Create children of P14 */
+
+    p15 = create((void *)test_process, 4096, 20, "P15", 1, 15);
+    proctab[p15].user_process = TRUE;
+    proctab[p15].prparent = p14;
+    resume(p15);
+
+    /* Create children of P15 */
+
+    p16 = create((void *)test_process, 4096, 20, "P16",1, 16);
+    proctab[p16].user_process = TRUE;
+    proctab[p16].prparent = p15;
+    resume(p16);
+
+    sleep(2);  /* Let processes start */
+    
+    /* Print initial process tree */
+    print_process_tree();
+    
+    /* Test Case 1: Kill leaf (P10) */
+    kprintf("\nTest 1: Killing leaf process P10\n");
+    kill(p10);
+    sleep(1);
+    print_process_tree();
+    
+    /* Test Case 2: Kill branch (P3) - should kill P5,P6,P7,P8,P9 too */
+    kprintf("\nTest 2: Killing branch process P3\n");
+    kill(p3);
+    sleep(1);
+    print_process_tree();
+    
+    /* Test Case 3: Kill root (P2) - should kill EVERYTHING BUT P1 */
+    kprintf("\nTest 3: Killing root process P2\n");
+    kill(p2);
+    sleep(1);
+    print_process_tree();
+    
+    return OK;
+}
